@@ -4,6 +4,11 @@
 ```BASH
 bash <(wget -qO- https://raw.githubusercontent.com/DigneZzZ/marzban_core_change/main/change.sh)
 ```
+
+# MultiLang:
+```BASH
+bash <(wget -qO- https://raw.githubusercontent.com/DigneZzZ/marzban_core_change/main/core.sh)
+```
 <p>
   Мой форум: https://openode.ru
   <br />На форуме действуют подписки для доступа к Клубам (в т.ч. по Marzban): https://openode.ru/subscriptions/
