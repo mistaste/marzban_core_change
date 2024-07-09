@@ -1,5 +1,27 @@
 #!/bin/bash
 
+# This script updates the Xray core in Marzban and Marzban Node.
+# Этот скрипт обновляет ядро Xray в Marzban и Marzban Node.
+# این اسکریپت هسته Xray را در Marzban و Marzban Node به‌روزرسانی می‌کند.
+
+echo -e "\e[1;32m"
+echo "#############################################################"
+echo "# This script updates the Xray core in Marzban and Marzban Node. #"
+echo "#############################################################"
+echo -e "\e[0m"
+
+echo -e "\e[1;32m"
+echo "##############################################################"
+echo "# Этот скрипт обновляет ядро Xray в Marzban и Marzban Node. #"
+echo "##############################################################"
+echo -e "\e[0m"
+
+echo -e "\e[1;32m"
+echo "##############################################################"
+echo "# این اسکریپت هسته Xray را در Marzban و Marzban Node به‌روزرسانی می‌کند. #"
+echo "##############################################################"
+echo -e "\e[0m"
+
 # Function to download and execute the script based on language selection
 execute_script() {
     local script_url=$1
