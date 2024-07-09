@@ -8,9 +8,9 @@ execute_script() {
 
 # Display language selection menu
 echo "Выберите язык скрипта / Choose the script language / زبان اسکریپت را انتخاب کنید:"
-echo "1. Русский / Russian / روسی"
-echo "2. English / Английский / انگلیسی"
-echo "3. فارسی / Farsi / Persian"
+echo -e "\e[41m1. Русский / Russian / روسی\e[0m"    # Red for Russia
+echo -e "\e[44m2. English / Английский / انگلیسی\e[0m"  # Blue for USA/UK
+echo -e "\e[42m3. فارسی / Farsi / Persian\e[0m"  # Green for Iran
 
 # Prompt user for language selection
 read -p "Введите номер выбранного языка / Enter the number of the selected language / شماره زبان انتخابی را وارد کنید: " lang_choice
