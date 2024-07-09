@@ -22,22 +22,18 @@ echo "│ این اسکریپت هسته Xray را در Marzban و Marzban Node 
 echo "└────────────────────────────────────────────────────────────────────────┘"
 echo -e "\e[0m"
 
-# Function to download and execute the script based on language selection
 execute_script() {
     local script_url=$1
     bash <(wget -qO- $script_url)
 }
 
-# Display language selection menu
 echo "Выберите язык скрипта / Choose the script language / زبان اسکریپت را انتخاب کنید:"
 echo -e "\e[41m1. \e[0m Русский / Russian / روسی"    # Red for Russia
 echo -e "\e[44m2. \e[0m English / Английский / انگلیسی"  # Blue for USA/UK
 echo -e "\e[42m3. \e[0m فارسی / Farsi / Persian"  # Green for Iran
 
-# Prompt user for language selection
 read -p "Введите номер выбранного языка / Enter the number of the selected language / شماره زبان انتخابی را وارد کنید: " lang_choice
 
-# Determine the corresponding script URL based on user's choice
 case $lang_choice in
     1)
         script_url="https://raw.githubusercontent.com/DigneZzZ/marzban_core_change/main/change.sh"
@@ -54,5 +50,4 @@ case $lang_choice in
         ;;
 esac
 
-# Execute the selected script
 execute_script $script_url
