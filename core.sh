@@ -28,9 +28,9 @@ execute_script() {
 }
 
 echo "Выберите язык скрипта / Choose the script language / زبان اسکریپت را انتخاب کنید:"
-echo -e "\e[41m1. \e[0m Русский / Russian / روسی"    # Red for Russia
-echo -e "\e[44m2. \e[0m English / Английский / انگلیسی"  # Blue for USA/UK
-echo -e "\e[42m3. \e[0m فارسی / Farsi / Persian"  # Green for Iran
+echo -e "\e[41m1. \e[0m Русский / Russian / روسی"   
+echo -e "\e[44m2. \e[0m English / Английский / انگلیسی" 
+echo -e "\e[42m3. \e[0m فارسی / Farsi / Persian" 
 
 read -p "Введите номер выбранного языка / Enter the number of the selected language / شماره زبان انتخابی را وارد کنید: " lang_choice
 
