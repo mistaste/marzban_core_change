@@ -155,7 +155,7 @@ fi
     cd "$marzban_node_dir" || exit
     docker compose up -d --force-recreate
 
-    echo "به‌روزرسانی هسته در Marzban-node به پایان رسید. هسته نصب شده نسخه $xray_version است"
+    echo "به‌روزرسانی هسته در Marzban-node به پایان رسید. هسته نصب شده نسخه $selected_version است"
 }
 
 # چاپ گزینه‌های موجود برای کاربر
