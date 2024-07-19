@@ -155,7 +155,7 @@ fi
     cd "$marzban_node_dir" || exit
     docker compose up -d --force-recreate
 
-    echo "Marzban-node core update completed. The core version installed is $xray_version"
+    echo "Marzban-node core update completed. The core version installed is $selected_version"
 }
 
 # Print available options for the user
