@@ -155,7 +155,7 @@ fi
     cd "$marzban_node_dir" || exit
     docker compose up -d --force-recreate
 
-    echo "Обновление ядра на Marzban-node завершено. Ядро установлено версии $xray_version"
+    echo "Обновление ядра на Marzban-node завершено. Ядро установлено версии $selected_version"
 }
 
 # Печатаем доступные опции для пользователя
