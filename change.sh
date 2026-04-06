@@ -1,18 +1,4 @@
 #!/bin/bash
-# Вывод заголовка
-echo '  
-_  _ ____ ____ _   _    ____ ____ ____ ____    _  _ ___  ___  ____ ___ ____ 
- \/  |__/ |__|  \_/     |    |  | |__/ |___    |  | |__] |  \ |__|  |  |___ 
-_/\_ |  \ |  |   |      |___ |__| |  \ |___    |__| |    |__/ |  |  |  |___ 
-                                                                            
-___  _   _    ____ ___  ____ _  _ ____ ___  ____  _  _ _   _ ___            
-|__]  \_/     |  | |__] |___ |\ | |  | |  \ |___   \/   \_/    /            
-|__]   |      |__| |    |___ | \| |__| |__/ |___ ._/\_   |    /__           
-                                                                            
-                                                                                                                                                                                               
-'
-echo -e "\e[1m\e[33|Our community: https://openode.xyz\n\e[0m"
-sleep 2s
 
 echo -e "\e[1m\e[33mДанный скрипт устанавливает ядро Xray в Marzban и Marzban Node\n\e[0m"
 sleep 1
@@ -117,11 +103,11 @@ echo "Установка завершена."
 update_marzban_node() {
 get_xray_core
 
-    # Поиск пути до папки Marzban-node и файла docker-compose.yml
-    marzban_node_dir=$(find / -type d -name "Marzban-node" -exec test -f "{}/docker-compose.yml" \; -print -quit)
+    # Стандартный путь до папки Marzban-node
+    marzban_node_dir="/opt/marzban-node"
 
-    if [ -z "$marzban_node_dir" ]; then
-        echo "Папка Marzban-node с файлом docker-compose.yml не найдена"
+    if [ ! -f "$marzban_node_dir/docker-compose.yml" ]; then
+        echo "Файл docker-compose.yml не найден в $marzban_node_dir"
         exit 1
     fi
 
