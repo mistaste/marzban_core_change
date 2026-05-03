@@ -76,27 +76,89 @@ rm "${xray_filename}"
 
 }
 
+# Поиск папки установки Marzban Main (где лежит .env и docker-compose.yml)
+detect_marzban_folder() {
+    local candidates=(
+        "/opt/marzban"
+        "/root/marzban"
+        "/var/lib/marzban"
+    )
+    for d in "${candidates[@]}"; do
+        if [ -f "$d/.env" ] && [ -f "$d/docker-compose.yml" ]; then
+            echo "$d"
+            return 0
+        fi
+    done
+
+    # Авто-поиск: ищем docker-compose.yml с образом marzban в типичных местах
+    local found
+    found=$(grep -rsl --include=docker-compose.yml -E 'gozargah/marzban|marzban:' \
+        /opt /root /var/www /var/lib /home /srv 2>/dev/null | head -n1)
+    if [ -n "$found" ]; then
+        dirname "$found"
+        return 0
+    fi
+    return 1
+}
+
 # Функция для обновления ядра Marzban Main
 update_marzban_main() {
 get_xray_core
-# Изменение ядра Marzban
-marzban_folder="/opt/marzban"
+
+# Определяем папку Marzban (с возможностью ручного ввода)
+marzban_folder="$(detect_marzban_folder || true)"
+if [ -z "$marzban_folder" ]; then
+    echo "Не удалось автоматически найти папку установки Marzban Main."
+    read -rp "Введите полный путь к папке Marzban (где лежит .env и docker-compose.yml): " marzban_folder
+fi
+marzban_folder="${marzban_folder%/}"
+
 marzban_env_file="${marzban_folder}/.env"
+marzban_compose_file="${marzban_folder}/docker-compose.yml"
+
+if [ ! -f "$marzban_env_file" ] || [ ! -f "$marzban_compose_file" ]; then
+    echo "Ошибка: в '$marzban_folder' не найдены .env и/или docker-compose.yml."
+    exit 1
+fi
+echo "Используется папка Marzban: $marzban_folder"
+
 xray_executable_path='XRAY_EXECUTABLE_PATH="/var/lib/marzban/xray-core/xray"'
 
 echo "Изменение ядра Marzban..."
-# Проверяем, существует ли уже строка XRAY_EXECUTABLE_PATH в файле .env
-if ! grep -q "^${xray_executable_path}" "$marzban_env_file"; then
-  # Если строка отсутствует, добавляем ее
-  echo "${xray_executable_path}" >> "${marzban_env_file}"
+# Раскомментируем строку XRAY_EXECUTABLE_PATH, если она закомментирована
+sed -ri 's|^[[:space:]]*#[[:space:]]*(XRAY_EXECUTABLE_PATH=.*)$|\1|' "$marzban_env_file"
+# Если строка отсутствует — добавляем
+if ! grep -qE '^[[:space:]]*XRAY_EXECUTABLE_PATH=' "$marzban_env_file"; then
+    echo "${xray_executable_path}" >> "${marzban_env_file}"
+else
+    # Если есть, но указывает в другое место — заменяем
+    sed -ri "s|^[[:space:]]*XRAY_EXECUTABLE_PATH=.*$|${xray_executable_path}|" "$marzban_env_file"
 fi
 
+# Гарантируем, что /var/lib/marzban проброшен в контейнер
+if ! grep -qE '^\s*-\s*/var/lib/marzban:/var/lib/marzban\s*$' "$marzban_compose_file"; then
+    echo "Добавление volume /var/lib/marzban в docker-compose.yml..."
+    sed -i '/volumes:/!b;n;/\/var\/lib\/marzban:\/var\/lib\/marzban/!a\      - /var/lib/marzban:/var/lib/marzban' "$marzban_compose_file"
+fi
 
 # Перезапускаем Marzban
 echo "Перезапуск Marzban..."
-marzban restart -n
+if command -v marzban >/dev/null 2>&1; then
+    marzban restart -n
+else
+    # Fallback: рестартуем через docker compose в папке установки
+    if (cd "$marzban_folder" && docker compose version >/dev/null 2>&1); then
+        (cd "$marzban_folder" && docker compose down && docker compose up -d)
+    elif (cd "$marzban_folder" && docker-compose version >/dev/null 2>&1); then
+        (cd "$marzban_folder" && docker-compose down && docker-compose up -d)
+    else
+        echo "Не найдены ни 'marzban' CLI, ни docker compose. Перезапустите контейнер вручную:"
+        echo "  cd $marzban_folder && docker compose down && docker compose up -d"
+        exit 1
+    fi
+fi
 
-echo "Установка завершена."
+echo "Установка завершена. Ядро установлено версии $selected_version"
 }
 
 # Функция для обновления ядра Marzban Node
